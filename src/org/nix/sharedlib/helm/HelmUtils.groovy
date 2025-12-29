@@ -44,7 +44,12 @@ class HelmUtils extends AbstractPipeline {
                 variable: HELM_SOPS_CREDENTIALS_VARIABLE
             )
         ]) {
-            String helmValuesArgs = "--values ${environmentAbsoluteRepoPath}/environment/${environment}/main.yaml --values ${environmentAbsoluteRepoPath}/environment/${environment}/${chartRepoName}/main.yaml"
+            String helmValuesArgs = "--values ${environmentAbsoluteRepoPath}/environment/${environment}/main.yaml"
+            String helmAppValuesFile = "--values ${environmentAbsoluteRepoPath}/environment/${environment}/${chartRepoName}/main.yaml"
+            if (script.fileExists(helmAppValuesFile)) {
+                log.info("Detected ${chartRepoName}/main.yaml in Kubernetes environment repo. Adding it to helmValuesArgs")
+                helmValuesArgs += " --values ${helmAppValuesFile}"
+            }
             String helmSecretsValuesFile = "${environmentAbsoluteRepoPath}/environment/${environment}/${chartRepoName}/secrets.yaml"
             if (script.fileExists(helmSecretsValuesFile)) {
                 log.info('Detected secrets.yaml in Kubernetes environment repo. Adding it to helmValuesArgs')
