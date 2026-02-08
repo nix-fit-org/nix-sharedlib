@@ -3,7 +3,7 @@ package org.nix.sharedlib.pipeline.build
 import org.nix.sharedlib.agent.BuildAgentFactory
 
 /**
- * Build .Net library pipeline
+ * Build .Net app pipeline
  */
 class BuildDotnetAppPipeline extends BuildAbstractAppPipeline {
 
